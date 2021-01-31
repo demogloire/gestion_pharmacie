@@ -1,0 +1,346 @@
+{% extends "layout/admin.html" %}
+
+{% block breadcrumb %}
+<div class="row">
+    <div class="col-7 align-self-center">
+        <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Produit</h3>
+        <div class="d-flex align-items-center">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb m-0 p-0">
+                    <li class="breadcrumb-item"><a href="">Liste des produits</a>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <div class="col-5 align-self-center">
+    </div>
+</div>
+{% endblock  %} 
+
+
+{% block body %}
+<div class="row">
+    <div class="col-lg-12">
+        {% with messages= get_flashed_messages(with_categories=true) %}
+                                        {% if messages  %}
+                                        {% for category, message in messages %}
+                                        {%if category!="danger"%}
+                                            <div class="alert round bg-{{ category }} alert-icon-left alert-dismissible mb-2" role="alert">
+                                                <span class="alert-icon">
+                                                    <i class="ft-thumbs-up"></i>
+                                                </span>
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                <strong>{{ message }}!</strong> 
+                                                
+                                            </div>
+                                        {%else%}
+                                            <div class="alert round bg-{{ category }} alert-icon-left alert-dismissible mb-2" role="alert">
+                                                <span class="alert-icon">
+                                                    <i class="ft-thumbs-down"></i>
+                                                </span>
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                <strong>{{ message }}!</strong>
+                                                
+                                            </div>
+                                        {%endif%}
+                                        
+                                        {% endfor %}
+                                        {% endif %}
+                                        {% endwith %}
+    </div>
+</div>
+
+    <form method="POST">
+        {{ form.csrf_token }}
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Information du produit</h4>
+                            <div class="form-body">
+                                <div class="row"> 
+                                    <div class="col-md-12">
+                                        <small>Prière de fournir les informations specifiques pour chaque produit.<i>Exemple:Paracetamol virtiga, pour description consultée la catalogue du médicament.</i></small>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            {% if form.nom_produit.errors %}
+                                            {{ form.nom_produit(class="form-control input-lg is-invalid", placeholder="Nom du produit")}}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.nom_produit.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                            {{ form.nom_produit(class="form-control input-lg", placeholder="Nom du produit")}}
+                                            {% endif %}                                
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            {% if form.description.errors %}
+                                            {{ form.description(class="form-control input-lg is-invalid", placeholder="Description du produit")}}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.description.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                            {{ form.description(class="form-control input-lg", placeholder="Description du produit")}}
+                                            {% endif %}                                
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Achat & Venete</h4>
+                            <div class="form-body">
+                                <div class="row"> 
+                                    <div class="col-md-12">
+                                        <small>Le prix d'achat comprend le coût d'achat, taxes et impôtes et les frais connexe, pour le prix de vente detaille prière  de mettre le prix pour chaque produit, idem pour le prix en gros.<i>1 Carton  de prix d'achat=10$, 1 Carton prix de vente détail = 12$, 1 Carton le prix de vente en gros = 11$ </i></small>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            {% if form.cout_achat.errors %}
+                                            {{ form.cout_achat(class="form-control input-lg is-invalid", placeholder="Prix d'achat")}}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.cout_achat.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                            {{ form.cout_achat(class="form-control input-lg", placeholder="Prix d'achat")}}
+                                            {% endif %}                                
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            {% if form.prix_detaille.errors %}
+                                            {{ form.prix_detaille(class="form-control input-lg is-invalid", placeholder="Prix de vente en détaille")}}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.prix_detaille.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                            {{ form.prix_detaille(class="form-control input-lg", placeholder="Prix de vente en détaille")}}
+                                            {% endif %}                                
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            {% if form.prix_gros.errors %}
+                                            {{ form.prix_gros(class="form-control input-lg is-invalid", placeholder="Prix de vente en gros")}}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.prix_gros.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                            {{ form.prix_gros(class="form-control input-lg", placeholder="Prix de vente en gros")}}
+                                            {% endif %}                                
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Emballage</h4>
+                            <div class="form-body">
+                                <div class="row"> 
+                                    <div class="col-md-12">
+                                        <small>Dans du contenu de l'emballage. <i>Exemple dans le carton il y'a combien de boîte, 1 carton, 20 boîtes</i></small>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    
+                                     <div class="col-md-12">
+                                        <div class="form-group">
+                                            {% if form.emballage.errors %}
+                                            {{ form.emballage(class="form-control input-lg is-invalid")}}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.emballage.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                            {{ form.emballage(class="form-control input-lg")}}
+                                            {% endif %}                                
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            {% if form.nombre_contenu.errors %}
+                                            {{ form.nombre_contenu(class="form-control input-lg is-invalid", placeholder="Nombre contenu")}}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.nombre_contenu.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                            {{ form.nombre_contenu(class="form-control input-lg", placeholder="Nombre contenu")}}
+                                            {% endif %}                                
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            {% if form.mesure_em.errors %}
+                                            {{ form.mesure_em(class="form-control input-lg is-invalid", placeholder="Mesure du contenu emballage")}}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.mesure_em.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                            {{ form.mesure_em(class="form-control input-lg", placeholder="Mesure du contenu emballage")}}
+                                            {% endif %}                                
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row"> 
+                                    <div class="col-md-12">
+                                        <small>Dans chaque contenu de l'emballge, il y'a combien de contenu. <i>Exemple dans une boîte, il y'a 12 plaquettes</i></small>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    
+                                    <div class="col-md-12">
+                                       <div class="form-group">
+                                           {% if form.emballage_contenu.errors %}
+                                           {{ form.emballage_contenu(class="form-control input-lg is-invalid", placeholder="Nom contenu emballage")}}
+                                           <div class="invalid-feedback">
+                                               {% for error in form.emballage_contenu.errors %}
+                                                   <span>{{ error }}</span>
+                                               {% endfor %}
+                                           </div>
+                                           {% else %}
+                                           {{ form.emballage_contenu(class="form-control input-lg", placeholder="Nom contenu emballage")}}
+                                           {% endif %}                                
+                                       </div>
+                                   </div>
+                                   <div class="col-md-4">
+                                       <div class="form-group">
+                                           {% if form.nombre_contenu_emballage.errors %}
+                                           {{ form.nombre_contenu_emballage(class="form-control input-lg is-invalid", placeholder="Nombre contenu emballage")}}
+                                           <div class="invalid-feedback">
+                                               {% for error in form.nombre_contenu_emballage.errors %}
+                                                   <span>{{ error }}</span>
+                                               {% endfor %}
+                                           </div>
+                                           {% else %}
+                                           {{ form.nombre_contenu_emballage(class="form-control input-lg", placeholder="Nombre contenu emballage")}}
+                                           {% endif %}                                
+                                       </div>
+                                   </div>
+                                   <div class="col-md-8">
+                                       <div class="form-group">
+                                           {% if form.mesure_em_con.errors %}
+                                           {{ form.mesure_em_con(class="form-control input-lg is-invalid", placeholder="Mesure du contenu emballage")}}
+                                           <div class="invalid-feedback">
+                                               {% for error in form.mesure_em_con.errors %}
+                                                   <span>{{ error }}</span>
+                                               {% endfor %}
+                                           </div>
+                                           {% else %}
+                                           {{ form.mesure_em_con(class="form-control input-lg", placeholder="Mesure du contenu emballage")}}
+                                           {% endif %}                                
+                                       </div>
+                                   </div>
+                               </div>
+                            </div>                
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Catégorie du produit et son avatar</h4>
+                            <div class="form-body">
+                                <div class="row"> 
+                                    <div class="col-md-12">
+                                        <small>Choisir la catégorie du produit, <i>Exemple: Paracetamol vertiga, est une catégorie d'anti-paludisme.</i></small>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            {% if form.categorie.errors %}
+                                            {{ form.categorie(class="form-control input-lg is-invalid")}}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.categorie.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                            {{ form.categorie(class="form-control input-lg")}}
+                                            {% endif %}                                
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">Charger</span>
+                                                </div>
+                                                <div class="custom-file">
+                                                    {% if form.avatar.errors %}
+                                                    {{ form.avatar(class="custom-file-input input-lg is-invalid", id="inputGroupFile01")}}
+                                                    <div class="invalid-feedback">
+                                                        {% for error in form.avatar.errors %}
+                                                            <span>{{ error }}</span>
+                                                        {% endfor %}
+                                                    </div>
+                                                    {% else %}
+                                                    {{ form.avatar(class="custom-file-input", id="inputGroupFile01")}}
+                                                    {% endif %} 
+                                                    <label class="custom-file-label" for="inputGroupFile01">Choisir fichier</label>
+                                                </div>                       
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-1"></div>
+        </div>
+        </div>
+        <div class="form-actions">
+            <div class="text-center">
+                <button type="submit" class="btn btn-info btn-md">Enregistrer</button>
+                <a href="" class="btn btn-danger btn-md">Annuler</a>
+            </div>
+        </div>
+    </form>
+    
+
+
+
+{% endblock  %} 

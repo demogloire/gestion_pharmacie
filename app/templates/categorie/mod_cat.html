@@ -1,0 +1,95 @@
+{% extends "layout/admin.html" %}
+
+{% block breadcrumb %}
+<div class="row">
+    <div class="col-7 align-self-center">
+        <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Catégorie</h3>
+        <div class="d-flex align-items-center">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb m-0 p-0">
+                    <li class="breadcrumb-item"><a href="{{url_for('categorie.index')}}">Liste des catégories</a>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <div class="col-5 align-self-center">
+    </div>
+</div>
+{% endblock  %} 
+
+
+{% block body %}
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Modification de la catégorie</h4>
+                <br>
+                {% with messages= get_flashed_messages(with_categories=true) %}
+                                        {% if messages  %}
+                                        {% for category, message in messages %}
+                                        {%if category!="danger"%}
+                                            <div class="alert round bg-{{ category }} alert-icon-left alert-dismissible mb-2" role="alert">
+                                                <span class="alert-icon">
+                                                    <i class="ft-thumbs-up"></i>
+                                                </span>
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                <strong>{{ message }}!</strong> 
+                                                
+                                            </div>
+                                        {%else%}
+                                            <div class="alert round bg-{{ category }} alert-icon-left alert-dismissible mb-2" role="alert">
+                                                <span class="alert-icon">
+                                                    <i class="ft-thumbs-down"></i>
+                                                </span>
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                <strong>{{ message }}!</strong>
+                                                
+                                            </div>
+                                        {%endif%}
+                                        
+                                        {% endfor %}
+                                        {% endif %}
+                                        {% endwith %}
+                <form method="POST">
+                    {{ form.csrf_token }}
+                    <div class="form-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    {% if form.nom.errors %}
+                                    {{ form.nom(class="form-control input-lg is-invalid", placeholder="Nom de la catégorie")}}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.nom.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    {% else %}
+                                    {{ form.nom(class="form-control input-lg", placeholder="Nom de la catégorie")}}
+                                    {% endif %}                                
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-actions">
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-info btn-md">Modifier</button>
+                            <a href="{{url_for('categorie.index')}}" class="btn btn-danger btn-md">Annuler</a>
+                            
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6"></div>
+</div>
+
+
+{% endblock  %} 

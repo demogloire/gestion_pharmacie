@@ -1,0 +1,115 @@
+{% extends "layout/admin.html" %}
+
+{% block breadcrumb %}
+<div class="row">
+    <div class="col-7 align-self-center">
+        <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Catégorie</h3>
+        <div class="d-flex align-items-center">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb m-0 p-0">
+                    <li class="breadcrumb-item"><a href="index.html">Liste des catégories</a>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+        <br>
+
+        <a href="{{url_for('categorie.ajouter_categorie')}}" class="btn btn-success">Ajouter catégorie</a>
+    </div>
+    <div class="col-5 align-self-center">
+    </div>
+</div>
+{% endblock  %} 
+
+{% block body %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Liste des catégorie</h4>
+                <h6 class="card-subtitle">Les catégories sont liées aux produits.</h6>
+            </div>
+
+            {% with messages= get_flashed_messages(with_categories=true) %}
+                                        {% if messages  %}
+                                        {% for category, message in messages %}
+                                        {%if category!="danger"%}
+                                            <div class="alert round bg-{{ category }} alert-icon-left alert-dismissible mb-2" role="alert">
+                                                <span class="alert-icon">
+                                                    <i class="ft-thumbs-up"></i>
+                                                </span>
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                <strong>{{ message }}!</strong> 
+                                                
+                                            </div>
+                                        {%else%}
+                                            <div class="alert round bg-{{ category }} alert-icon-left alert-dismissible mb-2" role="alert">
+                                                <span class="alert-icon">
+                                                    <i class="ft-thumbs-down"></i>
+                                                </span>
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                <strong>{{ message }}!</strong>
+                                                
+                                            </div>
+                                        {%endif%}
+                                        
+                                        {% endfor %}
+                                        {% endif %}
+                                        {% endwith %}
+
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Catégorie</th>
+                            <th class="text-center" scope="col">Nbr produit</th>
+                            <th class="text-center" scope="col">Statut</th>
+                            <th class="text-center" scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%for categorie in listes%}
+                        <tr>
+                            <th scope="row">{{loop.index}}</th>
+                            <td>{{categorie.nom_categorie}}</td>
+                            <td class="text-center">
+                                {%if categorie.categorie_nombre==None %}
+                                    0 produit
+                                {%else%}    
+                                    {%if categorie.categorie_nombre==0 or categorie.categorie_nombre==1 %}
+                                        {%if categorie.categorie_nombre==1 %}
+                                            <a href="">{{categorie.categorie_nombre}} produit</a>
+                                        {%else%}
+                                            0 produit
+                                        {%endif%}
+                                    {%else%}
+                                        {{categorie.categorie_nombre}} produits
+                                    {%endif%}
+                                {%endif%}
+                                
+                            </td>
+                            <td class="text-center">
+                                <a href="{{url_for('categorie.statut_categorie',cat_id=categorie.id )}} ">
+                                    {%if categorie.statut==True%}
+                                        <i class="fa fa-unlock-alt"></i>
+                                    {%else%}
+                                        <i class="fa fa-lock"></i>
+                                    {%endif%}
+                                </a>
+                            </td>
+                            <td class="text-center"> <a href="{{url_for('categorie.editer_categorie', cat_id=categorie.id)}}"><i class="fa fa-edit"></i></a>  </td>
+                        </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4"></div>
+</div>
+{% endblock  %} 

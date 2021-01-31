@@ -23,6 +23,13 @@ def create_app(config_name):
     # enregistrement des blueprint
     from . import authentification
     app.register_blueprint(authentification.bp)
+    #Catégorie du produit
+    from .categorie import categorie as categorie_blueprint
+    app.register_blueprint(categorie_blueprint)
+    
+    #Produit 
+    from .produit import produit as produit_blueprint
+    app.register_blueprint(produit_blueprint)
     
     return app
 
